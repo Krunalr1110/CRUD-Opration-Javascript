@@ -1,0 +1,121 @@
+<html>
+    <head>
+        <style>
+            table,th,td{border: 1px solid black;
+                        border-collapse: collapse;
+                        width:800px ;
+            }
+        </style>
+    </head>
+
+        <body>
+            <h1> Userdata </h1>
+                <a href="Add_users.html"> <img src="add.png" style="width:30px; margin-left:750px; ">  </a>
+
+                <div id="myForm" style="display: none;">
+            
+             
+                    Name <input type="text" name="user_name" id="edit_name"> <br><br>
+    
+                    Email <input type="email" name="user_email" id="edit_email" disabled> <br><br>
+            
+                    Number <input type="text" name="user_number" id="edit_number"> <br><br>
+            
+                    DOB <input type="date" name="user_dob" id="edit_dob"> <br><br>
+                    
+                    <!-- <button type="submit" class="btn" onclick="update()"> Update </button> -->
+                    <button type="button" class="btn cancel" onclick="updateForm()">Update</button>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                
+                </div>
+
+                    <table id="mytable">
+                        <thead>
+                            <th> Name </th>
+                            <th> Email </th>
+                            <th> Number </th>
+                            <th> DOB </th>
+                            <th> Action </th>
+                        </thead>
+                    </table>
+        </body>
+
+                <script type="text/javascript">
+                    function addrow(){
+                        var table = document.getElementById("mytable");
+
+                        var userdata = JSON.parse(localStorage.getItem("userdata"));
+                        if(userdata == ""){
+                            var row = table.insertRow();
+                        }else{
+                            for(i=0;i<userdata.length;i++){
+                                var row = table.insertRow();
+                                var email = userdata[i].email;
+
+                                var c1 = row.insertCell(0).innerHTML = userdata[i].name;
+                                var c2 = row.insertCell(1).innerHTML = userdata[i].email;
+                                var c3 = row.insertCell(2).innerHTML = userdata[i].number;
+                                var c4 = row.insertCell(3).innerHTML = userdata[i].dob;
+                                var c5 = row.insertCell(4).innerHTML = "<button onclick = editForm('"+email+"')> <img src = 'edit.png' style = 'width : 20px' >  </button>  <button onclick = delet('"+email+"')> <img src = 'delet.jpg' style = 'width : 20px' >  </button> " ;  
+                            }
+                        }
+
+                    }
+
+                    function editForm(email){
+                        var all_user = JSON.parse(localStorage.getItem("userdata"));
+
+                        for(i=0;i<all_user.length;i++){
+                            if(all_user[i].email == email){
+                                document.getElementById("edit_name").value = all_user[i].name; 
+                                document.getElementById("edit_email").value = all_user[i].email; 
+                                document.getElementById("edit_number").value = all_user[i].number; 
+                                document.getElementById("edit_dob").value = all_user[i].dob; 
+                            }
+                        }
+                        document.getElementById("myForm").style.display = "block";
+
+                    }
+
+                    function updateForm(){
+                        var edit_email = document.getElementById("edit_email").value;
+                        var update_user = JSON.parse(localStorage.getItem("userdata"));
+                        var all_users_localstorage = [];
+                        for(i=0;i<update_user.length;i++){
+                            if(update_user[i].email == edit_email){
+                                update_user[i].name = document.getElementById("edit_name").value;
+                                update_user[i].number = document.getElementById("edit_number").value;
+                                update_user[i].dob = document.getElementById("edit_dob").value;
+                            }
+                            all_users_localstorage.push(update_user[i]);
+                            console.log(all_users_localstorage);
+                        }
+                        localStorage.clear();
+                        localStorage.setItem("userdata",JSON.stringify(all_users_localstorage));
+                        alert("You have Sucessfully updated Data");
+                        location.reload();
+                    }
+
+
+                    function delet(email){
+                        var update_user = JSON.parse(localStorage.getItem("userdata"));
+                        var all_users_localstorage = [];
+                        for(i=0;i<update_user.length;i++){
+                            if(update_user[i].email == email) {
+                            }
+                            else{
+                                all_users_localstorage.push(update_user[i]);
+                            }
+                        }
+                        localStorage.clear();
+                        localStorage.setItem("userdata",JSON.stringify(all_users_localstorage));
+                        location.reload();
+                    }
+
+                        
+
+
+                    addrow();
+                </script>
+
+</html>
